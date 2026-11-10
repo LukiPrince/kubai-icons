@@ -12,7 +12,7 @@ import { Segmented } from "@/components/kit/segmented";
 import { SizeControl } from "@/components/kit/size-control";
 import { Swatches } from "@/components/kit/swatches";
 import { Glide } from "@/components/kit/glide";
-import { chip, navItem, raised, tile as tileStyle } from "@/components/kit/styles";
+import { chip, navItem, tile as tileStyle } from "@/components/kit/styles";
 import { loadIndex, loadKeywords, loadKeywordsLater, matchedKeyword, onKeywords, peekKeywords, prepare, searchObjects, type Category, type IconIndex, type IconMeta } from "@/lib/icons";
 import { track } from "@/lib/analytics";
 import { agentPrompt, asset, requestUrl } from "@/lib/site";
@@ -37,6 +37,8 @@ const writeUrl = (s: { q: string; cat: string; icon: string }) => {
 };
 
 const noKeywords = () => null;
+/** The category entry that lists the icons marked new. */
+const NEW_CAT = "new";
 
 export function IconBrowser({ categories: cats, firstChunk }: { categories: Category[]; firstChunk?: string }) {
   // Both start downloading with the page instead of waiting for the app to start.
@@ -90,7 +92,8 @@ export function IconBrowser({ categories: cats, firstChunk }: { categories: Cate
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const results = useMemo(() => searchObjects(list, query, cat), [list, query, cat]);
+  const hasNew = useMemo(() => list.some((i) => i.new), [list]);
+  const results = useMemo(() => (cat === NEW_CAT ? searchObjects(list.filter((i) => i.new), query) : searchObjects(list, query, cat)), [list, query, cat]);
   const hits = useMemo(() => (query.trim() ? new Map(results.map((r) => [r.name, matchedKeyword(r, query)])) : undefined), [results, query]);
 
   // A new category or query starts from the top of the grid, not somewhere in the middle
@@ -147,6 +150,12 @@ export function IconBrowser({ categories: cats, firstChunk }: { categories: Cate
           <button type="button" aria-current={!cat} onClick={() => pickCat("")} className={navItem({ active: !cat })}>
             <span className="truncate">{tr("All", "全部")}</span>
           </button>
+          {hasNew && (
+            <button type="button" aria-current={cat === NEW_CAT} onClick={() => pickCat(NEW_CAT)} className={navItem({ active: cat === NEW_CAT })}>
+              <span className="truncate">{tr("New", "新增")}</span>
+              <span aria-hidden className="size-1.5 shrink-0 rounded-pill bg-brand" />
+            </button>
+          )}
           {cats.map((c) => (
             <a key={c.id} href={asset(loc(`/icons/category/${c.id}/`))} aria-current={cat === c.id} onClick={(e) => filterTo(e, c.id)} className={navItem({ active: cat === c.id })}>
               <span className="truncate">{tr(c.en, c.zh ?? c.en)}</span>
@@ -209,9 +218,10 @@ export function IconBrowser({ categories: cats, firstChunk }: { categories: Cate
               onChange={(size) => { setSizing(true); setPrefs({ size }); }}
             />
           </div>
-          <div className="relative isolate -mx-gutter mb-3 flex gap-1.5 overflow-x-auto px-gutter pb-0.5 lg:hidden">
-            <Glide still selector="[aria-current=true]" className={cn("rounded-pill", raised)} />
+          <div className="relative isolate -mx-gutter mb-3 flex gap-0.5 overflow-x-auto px-gutter pb-0.5 lg:hidden">
+            <Glide still selector="[aria-current=true]" className="rounded-control bg-muted" />
             <button type="button" aria-current={!cat} className={chip({ active: !cat })} onClick={() => pickCat("")}>{tr("All", "全部")}</button>
+            {hasNew && <button type="button" aria-current={cat === NEW_CAT} className={chip({ active: cat === NEW_CAT })} onClick={() => pickCat(NEW_CAT)}>{tr("New", "新增")}</button>}
             {cats.map((c) => (
               <a key={c.id} href={asset(loc(`/icons/category/${c.id}/`))} aria-current={cat === c.id} className={chip({ active: cat === c.id })} onClick={(e) => filterTo(e, c.id)}>{tr(c.en, c.zh ?? c.en)}</a>
             ))}

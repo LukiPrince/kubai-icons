@@ -12,6 +12,10 @@ export type IconMeta = {
   badge?: string;
   tap?: boolean;
   by?: string;
+  /** The release the icon first shipped in; absent until it is released. */
+  since?: string;
+  /** Added in the latest release that added icons, or not released yet. */
+  new?: boolean;
 };
 export type Category = { id: string; en: string; zh?: string };
 export type IconIndex = { version: string; count: number; bases: number; categories: Category[]; hashes: Record<string, string>; first: string[]; icons: IconMeta[] };
