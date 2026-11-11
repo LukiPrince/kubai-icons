@@ -904,4 +904,9 @@
 "pencil-cup":["Kalemlik","kurşun kalem","kırtasiye"],
 "school-bus":["Okul servisi","okul otobüsü","servis"],
 "seesaw":["Tahterevalli","oyun parkı","denge"],
-"stacking-rings":["Halka kulesi","istifleme oyuncağı","oyuncak"]}
+"stacking-rings":["Halka kulesi","istifleme oyuncağı","oyuncak"],
+"shipping-label":["Kargo etiketi","paket etiketi","gönderi"],
+"car-crash":["Araba kazası","çarpışma","hasarlı araç"],
+"cars":["Arabalar","filo","araçlar"],
+"control-unit":["Kontrol ünitesi","ECU","modül"],
+"crash-sensor":["Çarpma sensörü","darbe sensörü","ivmeölçer"]}

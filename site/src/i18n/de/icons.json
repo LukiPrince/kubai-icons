@@ -4987,5 +4987,30 @@
 "Stapelringe",
 "Stapelturm",
 "Babyspielzeug"
+],
+"shipping-label": [
+"Versandetikett",
+"Paketaufkleber",
+"Paketschein"
+],
+"car-crash": [
+"Autounfall",
+"Unfallwagen",
+"Kollision"
+],
+"cars": [
+"Autos",
+"Fuhrpark",
+"Fahrzeuge"
+],
+"control-unit": [
+"Steuergerät",
+"ECU",
+"Airbag-Steuergerät"
+],
+"crash-sensor": [
+"Crashsensor",
+"Aufprallsensor",
+"Beschleunigungssensor"
 ]
 }
